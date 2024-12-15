@@ -252,20 +252,19 @@ __attribute__((constructor)) void reflective_ELF_injection(void) {{
     os.unlink(tmp_so_file)
 
 # Executes file -b to determine the filetype information of the file
-def get_ELF_type(filepath: str) -> str:
+def get_ELF_type(filepath: str) -> str | bool:
     try:
         output: bytes = subprocess.check_output(["file", "-b", filepath], stderr=subprocess.DEVNULL)
-        if b"ELF" not in output:
-            return ""
         if b"shared object" in output: 
             return "so"
         if b"executable" in output: 
             return "exe"
-        return ""
+        return False
     except subprocess.CalledProcessError:
         return False
     
 def main():
+    
     # make sure the correct number of arguments are provided, learn to fucking type
     if len(sys.argv) != 3:
         print(f"Usage: {sys.argv[0]} <ELF_path> <output_executable_filepath>")
@@ -275,14 +274,13 @@ def main():
     output_executable: str = sys.argv[2] # output executable name
     temp_source: str = "temp_source.c" # temp src file
     
-    
     # really basic input validation for the elf file
     if not os.path.isfile(ELF_path):
         print(f"Error: The specified ELF file does not exist: {ELF_path}")
         sys.exit(1)
 
     ELF_type: str = get_ELF_type(ELF_path)
-    if ELF_type == "":
+    if ELF_type == False:
         print("Error: The specified file is not an executable or shared object ELF file.")
         sys.exit(1)
 
