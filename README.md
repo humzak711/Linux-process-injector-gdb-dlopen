@@ -7,7 +7,7 @@
 *Do not be a fucking idiot and start creaming if you intend to misuse this for illegal purposes, if you cant code something like this you wont be able to do much with it*
 
 This is a program created (kind of rushed) in python/C, which takes the path to either an executable ELF or shared object ELF file and embed it into a compiled program at a filepath specified by you.<br>
-The compiled program when ran will inject an executable ELF or shared object ELF file of your choice into a random non root, non critical process via the lovely GNU debugger gdb and this means the embedded ELF will be executed within the memory of the target process rather than on disk. This technique is called a gdb-dlopen injection, where gdb uses ptrace to have the target process call dlopen on the path to our shared Object file in memory to execute the shared Object file in a region of memory in the target process.
+The compiled program when ran will inject an executable ELF or shared object ELF file of your choice into a random non root, non critical process via the lovely GNU debugger gdb and this means the embedded ELF will be executed within the memory of the target process rather than on disk.
 
 Dependencies:
 
